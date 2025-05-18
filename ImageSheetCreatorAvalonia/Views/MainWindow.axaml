@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ImageSheetCreatorAvalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:ImageSheetCreatorAvalonia.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ImageSheetCreatorAvalonia.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Image sheet creator" Height="450" Width="800">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+    </Grid.ColumnDefinitions>
+    
+    <Button x:Name="selectImageButton" Content="Select image" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="128,35,0,0"/>
+    <TextBox x:Name="ImagePathTextBox" HorizontalAlignment="Left" MinWidth="120" TextWrapping="Wrap" Text="{Binding ImagePaths, Mode=OneWay}" VerticalAlignment="Top" Width="200" Margin="230,36,0,0" IsEnabled="False"/>
+    <Label x:Name="imageLimitLabel" Content="Image limit:" HorizontalAlignment="Left" Margin="442,33,0,0" VerticalAlignment="Top"/>
+    <TextBox x:Name="imageLimitTextBox" HorizontalAlignment="Left" Margin="514,37,0,0" MinWidth="120" TextWrapping="Wrap" Text="{Binding ImageLimit, Mode=TwoWay}" VerticalAlignment="Top" Width="120"/>
+    <Button x:Name="addImageButton" Content="Add image" HorizontalAlignment="Left" Margin="650,36,0,0" VerticalAlignment="Top" IsEnabled="{Binding IsEnabledAddImageButton, Mode=OneWay}"/>
+
+    <Label x:Name="imagesInRowLabel" Content="Number of images in a row:" HorizontalAlignment="Left" Margin="115,209,0,0" VerticalAlignment="Top"/>
+    <TextBox x:Name="imagesInRowTextBox" HorizontalAlignment="Left" Margin="271,213,0,0" MinWidth="120" TextWrapping="Wrap" Text="{Binding ImagesInRow, Mode=TwoWay}" VerticalAlignment="Top" Width="120"/>
+    <Label x:Name="imagesInColumnLabel" Content="Number of images in a column:" HorizontalAlignment="Left" Margin="95,243,0,0" VerticalAlignment="Top"/>
+    <TextBox x:Name="imagesInColumnTextBox" HorizontalAlignment="Left" Margin="271,247,0,0" MinWidth="120" TextWrapping="Wrap" Text="{Binding ImagesInColumn, Mode=TwoWay}" VerticalAlignment="Top" Width="120"/>
+    <Label x:Name="aspectRatioLabel" Content="Aspect ratio:" HorizontalAlignment="Left" Margin="195,274,0,0" VerticalAlignment="Top"/>
+    <TextBox x:Name="aspectRatioTextBox" HorizontalAlignment="Left" Margin="271,277,0,0" MinWidth="120" TextWrapping="Wrap" Text="{Binding AspectRatio, Mode=TwoWay}" VerticalAlignment="Top" Width="120"/>
+    <CheckBox x:Name="flipAspectRatioCheckBox" Content="Flip aspect ratio" HorizontalAlignment="Left" Margin="271,308,0,0" VerticalAlignment="Top" IsChecked="{Binding FlipAspectRatio, Mode=TwoWay}"/>
+
+    <Button x:Name="createImageSheetButton" Content="Create image" HorizontalAlignment="Left" Margin="270,348,0,0" VerticalAlignment="Top" IsEnabled="{Binding IsEnabledCreateImageSheetButton, Mode=OneWay}"/>
+
+    <DataGrid x:Name="ImageList" ItemsSource="{Binding Images}" Margin="401,160,68,102"
+          AutoGenerateColumns="True" IsReadOnly="True" GridLinesVisibility="All">
+      <!--<ListView.View>
+        <GridView>
+          <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}" Width="180"/>
+          <GridViewColumn Header="Filename" DisplayMemberBinding="{Binding FileName}" Width="80"/>
+          <GridViewColumn Header="Limit" DisplayMemberBinding="{Binding DisplayLimit}" Width="50"/>
+        </GridView>
+      </ListView.View>-->
+    </DataGrid>
+    <Button x:Name="removeImageButton" Content="Remove image" HorizontalAlignment="Left" Margin="640,348,0,0" VerticalAlignment="Top" IsEnabled="{Binding IsEnabledRemoveImageButton, Mode=OneWay}"/>
+  </Grid>
+</Window>
