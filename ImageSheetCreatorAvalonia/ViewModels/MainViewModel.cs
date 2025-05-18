@@ -3,17 +3,15 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using DynamicData;
 using ImageSheetCreatorAvalonia.Views;
-using Splat;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Image = System.Drawing.Image;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace ImageSheetCreatorAvalonia.ViewModels;
 
@@ -102,7 +100,7 @@ public class MainViewModel : ViewModelBase
             {
                 foreach (var path in imageList)
                 {
-                    Image.FromFile(path);
+                    Image.Load(path);
                 }
             }
             catch (Exception)
@@ -174,7 +172,7 @@ public class MainViewModel : ViewModelBase
         {
             foreach (var imagePath in ImagePathsArray)
             {
-                Image.FromFile(imagePath);
+                Image.Load(imagePath);
             }
         }
         catch (Exception)
@@ -249,55 +247,41 @@ public class MainViewModel : ViewModelBase
         var imageIndex = 0;
         var currentImage = Images[imageIndex];
 
-        var destImage = new Bitmap(width, height);
+        var destImage = new Image<Rgba32>(width, height);
 
-        using (var graphics = Graphics.FromImage(destImage))
+        var imageNum = 0;
+        for (int y = 0; y < imagesInColumn; y++)
         {
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = CompositingQuality.HighQuality;
-            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            graphics.SmoothingMode = SmoothingMode.HighQuality;
-            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            var wrapMode = new ImageAttributes();
-            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-
-            var imageNum = 0;
-
-            for (int y = 0; y < imagesInColumn; y++)
+            for (int x = 0; x < imagesInRow; x++)
             {
-                for (int x = 0; x < imagesInRow; x++)
+                destImage.Mutate(o => o.DrawImage(currentImage.Image, new Point(x * biggestSize.width, y * biggestSize.height), 1));
+                if (currentImage.Limit > 0)
                 {
-                    var destRect = new Rectangle(x * biggestSize.width, y * biggestSize.height, biggestSize.width, biggestSize.height);
-                    graphics.DrawImage(currentImage.Image, destRect, 0, 0, currentImage.Image.Width, currentImage.Image.Height, GraphicsUnit.Pixel, wrapMode);
-                    if (currentImage.Limit > 0)
+                    imageNum++;
+                    if (imageNum >= currentImage.Limit)
                     {
-                        imageNum++;
-                        if (imageNum >= currentImage.Limit)
+                        imageIndex++;
+                        if (imageIndex >= Images.Count)
                         {
-                            imageIndex++;
-                            if (imageIndex >= Images.Count)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                imageNum = 0;
-                                currentImage = Images[imageIndex];
-                            }
+                            break;
+                        }
+                        else
+                        {
+                            imageNum = 0;
+                            currentImage = Images[imageIndex];
+                            currentImage.Image.Mutate(o => o.Resize(new Size(biggestSize.width, biggestSize.height)));
                         }
                     }
                 }
-                if (imageIndex >= Images.Count)
-                {
-                    break;
-                }
+            }
+            if (imageIndex >= Images.Count)
+            {
+                break;
             }
         }
 
-        var imageName = "címke kép.png";
-        destImage.Save(imageName, ImageFormat.Png);
-        var savePath = Path.Join(Directory.GetCurrentDirectory(), imageName);
+        var savePath = Path.Join(Directory.GetCurrentDirectory(), "címke kép.png");
+        destImage.SaveAsPng(savePath);
         var h = new MessageBoxWindow($"A kép elmentve ide: \"{savePath}\"");
         h.Show();
     }

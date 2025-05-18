@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using SixLabors.ImageSharp;
 
 namespace ImageSheetCreatorAvalonia
 {
@@ -13,7 +13,7 @@ namespace ImageSheetCreatorAvalonia
         public ImageData(string path, int limit)
         {
             Path = path;
-            Image = Image.FromFile(Path);
+            Image = Image.Load(Path);
             FileName = System.IO.Path.GetFileName(Path);
             Limit = limit;
             DisplayLimit = limit < 1 ? "mind" : limit.ToString();
