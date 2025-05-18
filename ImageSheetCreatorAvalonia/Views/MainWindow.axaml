@@ -43,12 +43,13 @@
 
     <Button x:Name="createImageSheetButton" Grid.Column="3" Grid.Row="5" Content="Create image" IsEnabled="{Binding IsEnabledCreateImageSheetButton, Mode=OneWay}"/>
 
-    <DataGrid x:Name="ImageList" Grid.Column="4" Grid.Row="4" ItemsSource="{Binding Images}"
-          AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All">
+    <DataGrid x:Name="ImageList" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" ItemsSource="{Binding Images}"
+          Margin="20,0,0,0"
+          AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True" GridLinesVisibility="All">
       <DataGrid.Columns>
         <DataGridTextColumn Header="Path" Binding="{Binding Path }" Width="180"/>
-        <DataGridTextColumn Header="Filename" Binding="{Binding FileName }" Width="80"/>
-        <DataGridTextColumn Header="Limit" Binding="{Binding DisplayLimit }" Width="50"/>
+        <DataGridTextColumn Header="Filename" Binding="{Binding FileName }" Width="110"/>
+        <DataGridTextColumn Header="Limit" Binding="{Binding DisplayLimit }" Width="80"/>
       </DataGrid.Columns>
     </DataGrid>
     <Button x:Name="removeImageButton" Grid.Column="4" Grid.Row="5" Content="Remove image" IsEnabled="{Binding IsEnabledRemoveImageButton, Mode=OneWay}"/>
