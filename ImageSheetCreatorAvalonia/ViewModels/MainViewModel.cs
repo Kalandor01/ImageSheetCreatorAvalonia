@@ -294,7 +294,12 @@ public class MainViewModel : ViewModelBase
                 }
             }
         }
-        destImage.Save("címke kép.png", ImageFormat.Png);
+
+        var imageName = "címke kép.png";
+        destImage.Save(imageName, ImageFormat.Png);
+        var savePath = Path.Join(Directory.GetCurrentDirectory(), imageName);
+        var h = new MessageBoxWindow($"A kép elmentve ide: \"{savePath}\"");
+        h.Show();
     }
     
     private void ImageListSelectionChanged(object? sender, SelectionChangedEventArgs e)
