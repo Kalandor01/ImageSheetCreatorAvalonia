@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="200"
+        x:Class="ImageSheetCreatorAvalonia.MessageBoxWindow"
+        Title="MessageBoxWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="MessageTextBlock" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <Button x:Name="OkButton" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">OK</Button>
+    </Grid>
+</Window>
